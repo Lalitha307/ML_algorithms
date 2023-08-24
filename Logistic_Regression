@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 
 #data extraction
-data=pd.read_csv(r'C:\Users\MAHA LAKSHMI\desktop tags\Downloads\iris.csv')
+data=pd.read_csv(r"C:\Users\DELL\OneDrive\Desktop\aiml\iris.csv")
 
 
 #data understanding
