@@ -1,0 +1,69 @@
+
+#accuracy through logistic regression
+import pandas as pd
+import numpy as np
+
+#adding the column names
+#a=["age","workclass","fnlwgt","education","education-num","maritial-status","occupation","relationship","race","sex","capital-gain","capital-loss","hours-per-week","native-country","class"]
+
+a=[i for i in 'abcdefghijklmno']
+data=pd.read_csv(r"C:\Users\DELL\OneDrive\Desktop\aiml\income.csv",names=a)
+
+# Data understanding
+print(data.head())
+print(data.shape)
+print(data.isna().sum())
+
+# need to check if question mark present or not or is it question mark or other
+#new value
+data['a'].value_counts()
+data['b'].value_counts()
+data['c'].value_counts()
+data['d'].value_counts()
+data['e'].value_counts()
+data['f'].value_counts()
+data['g'].value_counts()
+data['h'].value_counts()
+data['i'].value_counts()
+data['j'].value_counts()
+data['n'].value_counts()
+
+
+#replaceing the values with most repeated values
+data['b'].replace(to_replace=' ?',value=" private",inplace=True)
+data['g'].replace(to_replace=' ?',value=" Prof-specialty",inplace=True)
+data['n'].replace(to_replace=' ?',value=" United-States",inplace=True)
+
+
+data['b'].unique()# to find the correst column name to access the value
+data['g'].unique()
+
+
+s="bdfghijn"#this columns have strings
+
+from sklearn.preprocessing import LabelEncoder
+le=LabelEncoder()
+for i in s:
+    data[i]=le.fit_transform(data[i])
+    
+x=np.array(data.iloc[: , :-1])
+y=np.array(data.iloc[ : ,-1])
+print(x.shape,y.shape)
+
+
+
+from sklearn.model_selection import train_test_split
+xtrain,xtest,ytrain,ytest = train_test_split(x,y,test_size=0.2,random_state=1)
+
+from sklearn.linear_model import LogisticRegression
+model=LogisticRegression()
+model.fit(xtrain,ytrain)
+ypred = model.predict(xtest)
+
+from sklearn.metrics import accuracy_score
+print(accuracy_score(ytest, ypred)*100)
+
+#accuracy through knn
+from sklearn.neighbors import KNeighborsClassifier
+model = KNeighborsClassifier(n_neighbors=2)
+model.fit(xtrain,ytrain)
