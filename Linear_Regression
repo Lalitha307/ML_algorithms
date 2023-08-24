@@ -4,7 +4,7 @@ import matplotlib.pyplot as plt
 
 #data extraction
 indexes=[i for i in 'abcdefghijklmn']
-data=pd.read_csv(r"C:\Users\MAHA LAKSHMI\desktop tags\Downloads\boston.csv",names=indexes)
+data=pd.read_csv(r"C:\Users\DELL\OneDrive\Desktop\aiml\boston.csv",names=indexes)
 
 #data understanding
 print(data.head())
