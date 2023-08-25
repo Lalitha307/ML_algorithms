@@ -1,0 +1,83 @@
+#accuracy through logistic regression
+import pandas as pd
+import numpy as np
+
+#adding the column names
+a=[i for i in 'abcdefghijklmno']
+data=pd.read_csv(r"C:\Users\DELL\OneDrive\Desktop\aiml\income.csv",names=a)
+
+# Data understanding
+print(data.head())
+print(data.shape)
+print(data.isna().sum())
+
+# need to check if question mark present or not or is it question mark or other
+#new value
+data['a'].value_counts()
+data['b'].value_counts()
+data['c'].value_counts()
+data['d'].value_counts()
+data['e'].value_counts()
+data['f'].value_counts()
+data['g'].value_counts()
+data['h'].value_counts()
+data['i'].value_counts()
+data['j'].value_counts()
+data['n'].value_counts()
+
+
+#replaceing the values with most repeated values
+data['b'].replace(to_replace=' ?',value=" private",inplace=True)
+data['g'].replace(to_replace=' ?',value=" Prof-specialty",inplace=True)
+data['n'].replace(to_replace=' ?',value=" United-States",inplace=True)
+
+data['x']=np.arange(0,len(data))
+
+s="bdfghijn"#this columns have strings
+
+from sklearn.preprocessing import LabelEncoder
+le=LabelEncoder()
+for i in s:
+    data[i+'enc']=le.fit_transform(data[i])
+
+s=data.drop_duplicates('b').set_index('x')
+print(s[['b','benc']])
+s1=data.drop_duplicates('d').set_index('x')
+print(s1[['d','denc']])
+s2=data.drop_duplicates('f').set_index('x')
+print(s2[['f','fenc']])
+s3=data.drop_duplicates('g').set_index('x')
+print(s3[['g','genc']])
+s4=data.drop_duplicates('h').set_index('x')
+print(s4[['h','henc']])
+s5=data.drop_duplicates('i').set_index('x')
+print(s5[['i','ienc']])
+s6=data.drop_duplicates('j').set_index('x')
+print(s6[['j','jenc']])
+s7=data.drop_duplicates('n').set_index('x')
+print(s7[['n','nenc']])   
+# X = multi.fit_transform(df)
+    
+
+data.drop(['b','d','f','g','h','i','j','n','x'],axis=1,inplace=True)
+
+x=np.array(data.iloc[ : , [0,1,2,3,4,5,7,8,9,10,11,12,13,14]])
+y=np.array(data.iloc[ : , [6]])
+print(x.shape,y.shape)
+
+
+
+from sklearn.model_selection import train_test_split
+xtrain,xtest,ytrain,ytest = train_test_split(x,y,test_size=0.2,random_state=1)
+
+from sklearn.linear_model import LogisticRegression
+model=LogisticRegression()
+model.fit(xtrain,ytrain)
+ypred = model.predict(xtest)
+
+from sklearn.metrics import accuracy_score
+print(accuracy_score(ytest, ypred)*100)
+
+
+h=le.inverse_transform(data['b'])
+print(model.predict([[50,83361,13,0,0,13,5,9,1,2,4,2,6,0]]))
