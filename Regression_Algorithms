@@ -5,6 +5,39 @@ Created on Tue Sep 26 10:40:19 2023
 @author: DELL
 """
 
+
+
+
+from sklearn.linear_model import LinearRegression
+linear_model = LinearRegression()
+linear_model.fit(x_train,y_train)
+y_pred=linear_model.predict(x_test)
+
+from sklearn.neighbors import KNeighborsRegressor
+modelknn=KNeighborsRegressor(n_neighbors=9)
+modelknn.fit(x_train,y_train)
+y_predknn=modelknn.predict(x_test)
+
+from sklearn.tree import DecisionTreeRegressor
+modeldt=DecisionTreeRegressor()
+modeldt.fit(x_train,y_train)
+y_preddt=modeldt.predict(x_test)
+
+from sklearn.ensemble import RandomForestRegressor
+modelrf=RandomForestRegressor()
+modelrf.fit(x_train,y_train)
+y_predrf=modelrf.predict(x_test)
+
+from sklearn import metrics
+import numpy as np
+print('RMSE:', np.sqrt(metrics.mean_squared_error(y_test, y_pred)))
+print('RMSE:', np.sqrt(metrics.mean_squared_error(y_test, y_predknn)))
+print('RMSE:', np.sqrt(metrics.mean_squared_error(y_test, y_preddt)))
+print('RMSE:', np.sqrt(metrics.mean_squared_error(y_test, y_predrf)))
+
+
+
+#example program
 import pandas as pd
 import numpy as np
 data=pd.read_csv(r"C:\Users\DELL\OneDrive\Desktop\aiml\datasets\Tetuan City power consumption.csv")
