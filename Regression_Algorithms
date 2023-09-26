@@ -1,0 +1,58 @@
+# -*- coding: utf-8 -*-
+"""
+Created on Tue Sep 26 10:40:19 2023
+
+@author: DELL
+"""
+
+import pandas as pd
+import numpy as np
+data=pd.read_csv(r"C:\Users\DELL\OneDrive\Desktop\aiml\datasets\Tetuan City power consumption.csv")
+print(data.isna().sum())
+print(data.dtypes)
+
+
+data['date']=pd.to_datetime(data['DateTime']).dt.date
+data['day']=pd.to_datetime(data['DateTime']).dt.day
+data['month']=pd.to_datetime(data['DateTime']).dt.month
+data['year']=pd.to_datetime(data['DateTime']).dt.year
+
+data['hour']=pd.to_datetime(data['DateTime']).dt.hour
+data['minute']=pd.to_datetime(data['DateTime']).dt.minute
+data.drop('DateTime',axis=1,inplace=True)
+
+x=np.array(data.iloc[:,:5 and 8:])# all rows and columns starting from 0 to last but one stopping
+y=data.iloc[:,5:8].values
+print(y)
+
+from sklearn.model_selection import train_test_split
+xtrain,xtest,ytrain,ytest=train_test_split(x,y,test_size=0.2,random_state=2)
+
+print(xtrain.shape,ytrain.shape)
+print(xtest.shape,ytest.shape)
+
+#KNeighborsRegressor
+from sklearn.neighbors import KNeighborsRegressor
+model=KNeighborsRegressor(n_neighbors=3) #here k=3
+model.fit(xtrain,ytrain)
+
+#DecisionTreeRegressor
+from sklearn.tree import DecisionTreeRegressor
+model=DecisionTreeRegressor()
+model.fit(xtrain,ytrain)
+
+#RandomForestRegressor
+from sklearn.ensemble import RandomForestRegressor
+classifier= RandomForestRegressor(n_estimators= 10)  
+classifier.fit(xtrain, ytrain) 
+
+#LinearRegression
+from sklearn.linear_model import LinearRegression
+model=LinearRegression()
+model.fit(xtrain,ytrain)
+#tuning the classification algorithms
+
+ypred=model.predict(xtest)#storing the result of xtest data that is done by algorithm in ypred
+from sklearn.metrics import mean_squared_error
+import math
+print(math.sqrt(mean_squared_error(ytest,ypred)))
