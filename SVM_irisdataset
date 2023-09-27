@@ -45,7 +45,7 @@ print(xtest.shape)
 
 print(ytest.shape)
 
-from sklearn.svm import SVC
+from sklearn.svm import SVC # if we want to use for regression then SVR
 model=SVC(kernel='linear')#poly,#rbf or just model=SVC()
 model.fit(xtrain,ytrain)
 ypred=model.predict(xtest)
