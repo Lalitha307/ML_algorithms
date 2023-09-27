@@ -1,0 +1,57 @@
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+
+#data extraction
+data=pd.read_csv(r"C:\Users\DELL\OneDrive\Desktop\aiml\datasets\iris.csv")
+
+#data understanding
+print(data.head())
+print(data.columns)
+print(data.shape)
+
+
+#data prepossing
+print(data.isna().sum())
+print(data.describe())
+
+#replacing null values with mean
+data.fillna(data.mean(),inplace=True)
+print(data.isna().sum())
+
+data['ranges'] = np.arange(1,151)
+print(data.shape)
+print(data.head())
+
+#data correlation
+a=data.corr()
+plt.matshow(a)
+plt.colorbar()
+plt.show()
+
+
+
+#if additional column is added
+x=np.array(data.iloc[ : ,[0,1,2,3,5]])
+y=data.iloc[ : ,-2].values
+
+
+#splitting the data into testing and training
+from sklearn.model_selection import train_test_split
+xtrain,xtest,ytrain,ytest=train_test_split(x,y,test_size=0.2)
+
+print(xtest.shape)
+
+print(ytest.shape)
+
+from sklearn.svm import SVC
+model=SVC(kernel='linear')#poly,#rbf or just model=SVC()
+model.fit(xtrain,ytrain)
+ypred=model.predict(xtest)
+
+from sklearn.metrics import accuracy_score
+print(accuracy_score(ytest,ypred)*100)
+
+new_value=model.predict([[1.4,6.9,4.6,8.8,118],[1,2,3,4,49],[0,0,0,0,100],[5,6,7,8,19]])
+print(new_value)
